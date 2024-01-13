@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla", "src\MultiTekla\MultiTekla.csproj", "{D86B3598-212B-4618-A2F0-95FB39DD13C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.CLI", "src\MultiTekla.CLI\MultiTekla.CLI.csproj", "{6145E1DC-4A02-4618-95F9-FDCA97A0AD89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D86B3598-212B-4618-A2F0-95FB39DD13C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86B3598-212B-4618-A2F0-95FB39DD13C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86B3598-212B-4618-A2F0-95FB39DD13C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86B3598-212B-4618-A2F0-95FB39DD13C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6145E1DC-4A02-4618-95F9-FDCA97A0AD89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6145E1DC-4A02-4618-95F9-FDCA97A0AD89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6145E1DC-4A02-4618-95F9-FDCA97A0AD89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6145E1DC-4A02-4618-95F9-FDCA97A0AD89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
