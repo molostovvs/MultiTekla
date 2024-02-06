@@ -1,8 +1,11 @@
+using System;
+using MultiTekla.Contracts;
+
 namespace MultiTekla.Plugins;
 
-public class ModelNamePlugin : IPlugin
+public class ModelNamePlugin : IPlugin<object>
 {
-    public void Run()
+    public object Run()
     {
         var model = new Tekla.Structures.Model.Model();
         var modelInfo = model.GetInfo();
@@ -13,5 +16,7 @@ public class ModelNamePlugin : IPlugin
             modelInfo.ModelPath,
             modelInfo.SingleUserModel
         );
+
+        return new object();
     }
 }

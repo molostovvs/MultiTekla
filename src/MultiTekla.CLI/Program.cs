@@ -1,36 +1,33 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using CliFx;
 using MultiTekla.Core;
 
-try
+namespace MultiTekla.CLI;
+
+public static class Program
 {
-    var sw = new Stopwatch();
-    sw.Start();
+    public static async Task<int> Main(string[] args)
+    {
+        var pluginComposition = new PluginManager().ConfigurePluginComposition();
+        using var pluginsContainer = pluginComposition.CreateContainer();
+        var cliCommands = pluginsContainer.GetExports<ICommand>().ToArray();
 
-    AppDomain.CurrentDomain.AssemblyResolve +=
-        (_, a) => TeklaBinResolve(a, @"C:\TeklaStructures\2022.0\bin\");
-    var headless = Headless.BuildHeadless.Default().Build();
-    headless.Initialize();
+        return await ConfigureCliApp(cliCommands).RunAsync();
+    }
 
-    Console.Clear();
-    sw.Stop();
-    Console.WriteLine($"Headless initialization took {sw.ElapsedMilliseconds}ms");
-
-    headless.RunPlugins();
-    Console.ReadKey();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex);
-    Console.ReadKey();
-}
-
-return;
-
-static Assembly? TeklaBinResolve(ResolveEventArgs args, string tsBinDirectory)
-{
-    var requestedAssembly = new AssemblyName(args.Name);
-
-    return File.Exists(Path.Combine(tsBinDirectory,      requestedAssembly.Name + ".dll"))
-        ? Assembly.LoadFile(Path.Combine(tsBinDirectory, requestedAssembly.Name + ".dll")) : null;
+    private static CliApplication ConfigureCliApp(ICommand[] cliCommands)
+        => new CliApplicationBuilder()
+           .AddCommands(cliCommands.Select(c => c.GetType()))
+           .UseTypeActivator(
+                type =>
+                {
+                    var export = cliCommands.First(c => c.GetType() == type);
+                    return export;
+                }
+            )
+           .Build();
 }
