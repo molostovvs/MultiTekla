@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins;
+namespace MultiTekla.Plugins.Core;
 
 public interface IEmptyHeadless
 {
@@ -6,11 +6,6 @@ public interface IEmptyHeadless
 }
 
 public interface IHeadlessWithBinDirectory
-{
-    public IHeadlessWithModelPath ModelPath(string modelPath);
-}
-
-public interface IHeadlessWithModelPath
 {
     public IHeadlessWithEnvironmentPath EnvironmentPath(string environmentIniPath);
 }
@@ -23,7 +18,6 @@ public interface IHeadlessWithEnvironmentPath
 public interface ICompletedHeadless
 {
     public ICompletedHeadless BinDirectory(string pathToBinDirectory);
-    public ICompletedHeadless ModelPath(string modelPath);
     public ICompletedHeadless EnvironmentPath(string environmentIniPath);
     public ICompletedHeadless RolePath(string roleIniPath);
 

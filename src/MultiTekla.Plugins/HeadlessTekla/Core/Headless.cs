@@ -1,9 +1,8 @@
-using System;
 using System.IO;
 using System.Text;
 using TSS = Tekla.Structures.Service;
 
-namespace MultiTekla.Plugins;
+namespace MultiTekla.Plugins.Core;
 
 public sealed class Headless : IDisposable
 {
@@ -45,7 +44,7 @@ public sealed class Headless : IDisposable
         RoleIniPath = headless.RoleIniPath;
         TeklaService = new TSS.TeklaStructuresService(
             new DirectoryInfo(TeklaBinPath),
-            "EN",
+            "English",
             new FileInfo(EnvironmentIniPath),
             new FileInfo(RoleIniPath)
         );
@@ -54,7 +53,6 @@ public sealed class Headless : IDisposable
     #region Builder
 
     public class BuildHeadless : IEmptyHeadless, ICompletedHeadless, IHeadlessWithBinDirectory,
-                                 IHeadlessWithModelPath,
                                  IHeadlessWithEnvironmentPath
     {
         private readonly Headless _headless = new();
@@ -89,7 +87,7 @@ public sealed class Headless : IDisposable
             return this;
         }
 
-        ICompletedHeadless ICompletedHeadless.ModelPath(string modelPath)
+        ICompletedHeadless ModelPath(string modelPath)
         {
             _headless.ModelPath = modelPath ?? throw new ArgumentNullException(nameof(modelPath));
             return this;
@@ -126,12 +124,6 @@ public sealed class Headless : IDisposable
         {
             var headless = new Headless(_headless);
             return headless;
-        }
-
-        IHeadlessWithModelPath IHeadlessWithBinDirectory.ModelPath(string modelPath)
-        {
-            _headless.ModelPath = modelPath ?? throw new ArgumentNullException(nameof(modelPath));
-            return this;
         }
     }
 
