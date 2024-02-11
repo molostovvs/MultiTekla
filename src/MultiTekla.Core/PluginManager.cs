@@ -19,7 +19,7 @@ public class PluginManager
     private IReadOnlyList<Assembly> LoadPluginAssemblies()
         => Directory.GetFiles(
                 Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
                     PluginsFolderName
                 ),
                 "*.dll"
