@@ -1,25 +1,22 @@
-using System.Composition;
 using System.IO;
-using CliFx;
-using MultiTekla.Plugins.Config;
 
 namespace MultiTekla.Plugins.ModelNamePlugin;
 
 [Command("model name", Description = "Get model name")]
 public class ModelNameCommand : ICommandFor<ModelNamePlugin>
 {
-    [CommandOption("headless", 's', Description = "Run plugin headlessly")]
-    public bool HeadlessOption { get; set; } = false;
+    [CommandOption("headless", 's', Description = "Run plugin with headless Tekla")]
+    public bool HeadlessOption { get; init; } = false;
 
     [CommandOption("model-path", 'm', Description = "Path to model folder")]
-    public string? ModelPath { get; set; }
+    public string? ModelPath { get; init; }
 
     [CommandOption(
         "config",
         'c',
         Description = "Config to use for headless run, if not specified, \"default.toml\" used"
     )]
-    public string? ConfigName { get; set; }
+    public string ConfigName { get; init; } = "default";
 
     public ValueTask ExecuteAsync(IConsole console)
     {
@@ -29,35 +26,16 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
                 "Model path is not specified or doesn't exist"
             );
 
-        var configPlugin = HeadlessConfigPlugin.Value;
-        var headlessConfig = configPlugin.GetConfigWithName(ConfigName ?? "default");
-        headlessConfig.ModelPath = ModelPath;
+        var modelPlugin = Plugin.Value;
 
-        var headlessPlugin = HeadlessPlugin.Value;
-        headlessPlugin.Config = headlessConfig;
-        var time = headlessPlugin.Run();
-
+        var time = modelPlugin.StartHeadless(ConfigName, ModelPath);
         console.Clear();
         console.Output.WriteLine($"Headless initialization took {time.Seconds}s");
 
-        var modelPlugin = Plugin.Value;
         modelPlugin.Run();
 
         return default;
     }
 
-    public Lazy<ModelNamePlugin> Plugin { get; set; }
-
-    [Import]
-    public Lazy<HeadlessTeklaPlugin> HeadlessPlugin { get; set; }
-
-    [Import]
-    public Lazy<HeadlessConfigPlugin> HeadlessConfigPlugin { get; set; }
-}
-
-[Command("model", Description = "Model related commands")]
-public class ModelCommand : ICommand
-{
-    public ValueTask ExecuteAsync(IConsole console)
-        => default;
+    public Lazy<ModelNamePlugin> Plugin { get; set; } = null!;
 }
