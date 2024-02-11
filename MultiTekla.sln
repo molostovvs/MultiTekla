@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.Contracts", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.Plugins", "src\MultiTekla.Plugins\MultiTekla.Plugins.csproj", "{721A8CF6-88EE-42F2-B1D7-24F9F1123A3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.CLI.Commands", "src\MultiTekla.CLI.Commands\MultiTekla.CLI.Commands.csproj", "{1AA3675F-ADA9-4B54-8D66-6771085EEE6E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{721A8CF6-88EE-42F2-B1D7-24F9F1123A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{721A8CF6-88EE-42F2-B1D7-24F9F1123A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{721A8CF6-88EE-42F2-B1D7-24F9F1123A3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AA3675F-ADA9-4B54-8D66-6771085EEE6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AA3675F-ADA9-4B54-8D66-6771085EEE6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AA3675F-ADA9-4B54-8D66-6771085EEE6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AA3675F-ADA9-4B54-8D66-6771085EEE6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
