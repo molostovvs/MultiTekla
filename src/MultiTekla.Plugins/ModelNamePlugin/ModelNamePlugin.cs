@@ -1,7 +1,4 @@
-using System;
-using MultiTekla.Contracts;
-
-namespace MultiTekla.Plugins;
+namespace MultiTekla.Plugins.ModelNamePlugin;
 
 public class ModelNamePlugin : IPlugin<object>
 {
