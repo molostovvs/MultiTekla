@@ -6,5 +6,5 @@ public class HeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
     public ValueTask ExecuteAsync(IConsole console)
         => default;
 
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; }
+    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }

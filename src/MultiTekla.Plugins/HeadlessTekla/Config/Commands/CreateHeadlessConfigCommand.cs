@@ -46,5 +46,5 @@ public class CreateHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
         return default;
     }
 
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; }
+    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }
