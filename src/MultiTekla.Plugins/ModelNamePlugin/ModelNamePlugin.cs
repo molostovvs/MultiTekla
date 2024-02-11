@@ -1,3 +1,5 @@
+using MultiTekla.Plugins.Config;
+
 namespace MultiTekla.Plugins.ModelNamePlugin;
 
 public class ModelNamePlugin : IPlugin<object>
@@ -16,4 +18,18 @@ public class ModelNamePlugin : IPlugin<object>
 
         return new object();
     }
+
+    public TimeSpan StartHeadless(string? configName, string? modelPath)
+    {
+        var configPlugin = HeadlessConfigPlugin.Value;
+        var headlessConfig = configPlugin.GetConfigWithName(configName ?? "default");
+        headlessConfig.ModelPath = modelPath;
+
+        var headlessPlugin = HeadlessTeklaPlugin.Value;
+        headlessPlugin.Config = headlessConfig;
+        return headlessPlugin.Run();
+    }
+
+    public Lazy<HeadlessTeklaPlugin> HeadlessTeklaPlugin { get; set; } = null!;
+    public Lazy<HeadlessConfigPlugin> HeadlessConfigPlugin { get; set; } = null!;
 }

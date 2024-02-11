@@ -19,7 +19,7 @@ public class PluginManager
     private IReadOnlyList<Assembly> LoadPluginAssemblies()
         => Directory.GetFiles(
                 Path.Combine(
-                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty,
                     PluginsFolderName
                 ),
                 "*.dll"
@@ -33,10 +33,16 @@ public class PluginManager
         var assemblies = LoadPluginAssemblies();
 
         var cb = new ConventionBuilder();
-        cb.ForTypesDerivedFrom(typeof(IPlugin<>)).Export();
-        cb.ForTypesDerivedFrom(typeof(ICommandFor<>)).Export<ICommand>();
-        cb.ForTypesDerivedFrom<ICommand>().Export<ICommand>();
-        cb.ForTypesDerivedFrom(typeof(ICommandFor<>)).ImportProperties(p => p.Name == "Plugin");
+
+        cb.ForTypesDerivedFrom(typeof(IPlugin<>))
+           .Export()
+           .ImportProperties(p => p.Name.Contains("Plugin"));
+        cb.ForTypesDerivedFrom(typeof(ICommandFor<>))
+           .Export<ICommand>()
+           .ImportProperties(p => p.Name.Contains("Plugin"));
+        cb.ForTypesDerivedFrom<ICommand>()
+           .Export<ICommand>()
+           .ImportProperties(p => p.Name.Contains("Plugin"));
 
         var configuration = new ContainerConfiguration().WithAssemblies(assemblies, cb);
         return configuration;
