@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>Latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MultiTekla.CLI\MultiTekla.CLI.csproj"/>
+        <ProjectReference Include="..\MultiTekla.Plugins\MultiTekla.Plugins.csproj"/>
+    </ItemGroup>
+
+    <Target Name="Copy plugins" AfterTargets="Build">
+        <Copy SourceFiles="$(OutputPath)/MultiTekla.CLI.Commands.dll" DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net48/plugins"/>
+        <Message Importance="high" Text="Copied plugins to CLI app"/>
+    </Target>
+
+</Project>
