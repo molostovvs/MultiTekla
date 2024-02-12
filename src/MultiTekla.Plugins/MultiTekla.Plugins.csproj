@@ -1,34 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net48</TargetFramework>
+        <TargetFrameworks>net48;net8.0</TargetFrameworks>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>Latest</LangVersion>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <NoWarn>NU1701</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MultiTekla.Contracts\MultiTekla.Contracts.csproj" />
+        <ProjectReference Include="..\MultiTekla.Contracts\MultiTekla.Contracts.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="PolySharp" Version="1.14.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Tekla.Structures.Model" Version="2022.0.10715" />
-      <PackageReference Include="Tekla.Structures.Service" Version="2022.0.10715" />
-      <PackageReference Include="Tomlyn" Version="0.17.0" />
+        <PackageReference Include="PolySharp" Version="1.14.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Tekla.Structures.Model" Version="2022.0.10715"/>
+        <PackageReference Include="Tekla.Structures.Service" Version="2022.0.10715"/>
+        <PackageReference Include="Tomlyn" Version="0.17.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="MultiTekla.Plugins.csproj.DotSettings" />
+        <None Remove="MultiTekla.Plugins.csproj.DotSettings"/>
     </ItemGroup>
-
 
     <Target Name="Copy plugins" AfterTargets="Build">
-        <Copy SourceFiles="$(OutputPath)/MultiTekla.Plugins.dll;$(OutputPath)/Tomlyn.dll" DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net48/plugins"/>
-        <Message Importance="high" Text="Copied plugins to CLI app"/>
+        <Copy SourceFiles="$(OutputPath)/MultiTekla.Plugins.dll;$(OutputPath)/Tomlyn.dll"
+              DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net48/plugins"
+              Condition="'$(TargetFramework)' == 'net48'"/>
+        <Message Importance="high" Text="Copied plugins to CLI app" Condition="'$(TargetFramework)' == 'net48'"/>
+
+        <Copy SourceFiles="$(OutputPath)/MultiTekla.Plugins.dll;$(OutputPath)/Tomlyn.dll"
+              DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net8.0/plugins"
+              Condition="'$(TargetFramework)' == 'net8.0'"/>
+        <Message Importance="high" Text="Copied plugins to CLI app" Condition="'$(TargetFramework)' == 'net8.0'"/>
     </Target>
 
 </Project>
