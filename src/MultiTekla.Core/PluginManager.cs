@@ -36,13 +36,13 @@ public class PluginManager
 
         cb.ForTypesDerivedFrom(typeof(IPlugin<>))
            .Export()
-           .ImportProperties(p => p.Name.Contains("Plugin"));
+           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
         cb.ForTypesDerivedFrom(typeof(ICommandFor<>))
            .Export<ICommand>()
-           .ImportProperties(p => p.Name.Contains("Plugin"));
+           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
         cb.ForTypesDerivedFrom<ICommand>()
            .Export<ICommand>()
-           .ImportProperties(p => p.Name.Contains("Plugin"));
+           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
 
         var configuration = new ContainerConfiguration().WithAssemblies(assemblies, cb);
         return configuration;
