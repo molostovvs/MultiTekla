@@ -15,8 +15,11 @@ public class CreateHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
     [CommandOption("role-ini-path", 'r', Description = "Path to role.ini")]
     public string? RoleIniPath { get; init; }
 
-    [CommandOption("model-path", 'm', Description = "Path to model")]
-    public string? ModelPath { get; init; }
+    [CommandOption("models-path", 'p', Description = "Path to folder with models")]
+    public string? ModelsPath { get; init; }
+
+    [CommandOption("model-name", 'm', Description = "Model name")]
+    public string? ModelName { get; init; }
 
     [CommandOption("from-config", 'f', Description = "Reuse values from existing config file")]
     public string? FromConfigName { get; init; }
@@ -29,7 +32,8 @@ public class CreateHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
             TeklaBinPath = TeklaBinPath,
             EnvironmentIniPath = EnvironmentIniPath,
             RoleIniPath = RoleIniPath,
-            ModelPath = ModelPath,
+            ModelsPath = ModelsPath,
+            ModelName = ModelName,
         };
 
         var pluginValue = Plugin.Value;

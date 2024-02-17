@@ -4,6 +4,10 @@ namespace MultiTekla.Plugins.ModelNamePlugin;
 
 public class ModelNamePlugin : IPlugin<object>
 {
+    public string? ModelName { get; set; }
+    public string? ConfigName { get; set; }
+    private HeadlessConfig? HeadlessConfig { get; set; }
+
     public object Run()
     {
         var model = new Tekla.Structures.Model.Model();
@@ -19,14 +23,14 @@ public class ModelNamePlugin : IPlugin<object>
         return new object();
     }
 
-    public TimeSpan StartHeadless(string? configName, string? modelPath)
+    private TimeSpan StartHeadless()
     {
         var configPlugin = HeadlessConfigPlugin.Value;
-        var headlessConfig = configPlugin.GetConfigWithName(configName ?? "default");
-        headlessConfig.ModelPath = modelPath;
+        HeadlessConfig = configPlugin.GetConfigWithName(ConfigName ?? "default");
+        HeadlessConfig.ModelName = ModelName;
 
         var headlessPlugin = HeadlessTeklaPlugin.Value;
-        headlessPlugin.Config = headlessConfig;
+        headlessPlugin.Config = HeadlessConfig;
         return headlessPlugin.Run();
     }
 

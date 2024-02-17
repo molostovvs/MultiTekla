@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using MultiTekla.Plugins.Config;
 using TSS = Tekla.Structures.Service;
 
 namespace MultiTekla.Plugins.Core;
@@ -7,23 +8,20 @@ namespace MultiTekla.Plugins.Core;
 public sealed class Headless : IDisposable
 {
     public TSS.TeklaStructuresService? TeklaService { get; private set; }
-    public string TeklaBinPath { get; private set; }
-    public string EnvironmentIniPath { get; private set; }
-    public string RoleIniPath { get; private set; }
-    public string ModelPath { get; private set; }
+    public HeadlessConfig Config { get; private set; } = new();
 
     public void Initialize(
-        DirectoryInfo? modelName = null,
+        DirectoryInfo? modelPath = null,
         string? license = null,
         string? trimbleIdentityIdToken = null,
         string? trimbleAccessToken = null,
         bool useExistingLogin = false,
         string? organizationId = null)
     {
-        modelName ??= new DirectoryInfo(ModelPath);
+        modelPath ??= new DirectoryInfo(Path.Combine(Config.ModelsPath, Config.ModelName));
 
         TeklaService?.Initialize(
-            modelName,
+            modelPath,
             license,
             trimbleIdentityIdToken,
             trimbleAccessToken,
@@ -38,15 +36,16 @@ public sealed class Headless : IDisposable
 
     private Headless(Headless headless)
     {
-        TeklaBinPath = headless.TeklaBinPath;
-        ModelPath = headless.ModelPath;
-        EnvironmentIniPath = headless.EnvironmentIniPath;
-        RoleIniPath = headless.RoleIniPath;
+        Config.TeklaBinPath = headless.Config.TeklaBinPath;
+        Config.ModelsPath = headless.Config.ModelsPath;
+        Config.EnvironmentIniPath = headless.Config.EnvironmentIniPath;
+        Config.RoleIniPath = headless.Config.RoleIniPath;
+
         TeklaService = new TSS.TeklaStructuresService(
-            new DirectoryInfo(TeklaBinPath),
+            new DirectoryInfo(Config.TeklaBinPath),
             "English",
-            new FileInfo(EnvironmentIniPath),
-            new FileInfo(RoleIniPath)
+            new FileInfo(Config.EnvironmentIniPath),
+            new FileInfo(Config.RoleIniPath)
         );
     }
 
@@ -69,12 +68,16 @@ public sealed class Headless : IDisposable
         {
             var headless = new Headless
             {
-                TeklaBinPath = @"C:\TeklaStructures\2022.0\bin\",
-                ModelPath = @"C:\TeklaStructuresModels\test-model",
-                EnvironmentIniPath =
-                    @"C:\TeklaStructures\2022.0\Environments\default\env_Default_environment.ini",
-                RoleIniPath =
-                    @"C:\TeklaStructures\2022.0\Environments\default\role_Steel_Detailer.ini",
+                Config =
+                {
+                    TeklaBinPath = @"C:\TeklaStructures\2022.0\bin\",
+                    EnvironmentIniPath =
+                        @"C:\TeklaStructures\2022.0\Environments\default\env_Default_environment.ini",
+                    RoleIniPath =
+                        @"C:\TeklaStructures\2022.0\Environments\default\role_Steel_Detailer.ini",
+                    ModelsPath = @"C:\TeklaStructuresModels\test-model",
+                    ModelName = "test-model",
+                },
             };
 
             return new BuildHeadless(headless);
@@ -82,41 +85,42 @@ public sealed class Headless : IDisposable
 
         public IHeadlessWithBinDirectory BinDirectory(string pathToBinDirectory)
         {
-            _headless.TeklaBinPath = pathToBinDirectory
+            _headless.Config.TeklaBinPath = pathToBinDirectory
                 ?? throw new ArgumentNullException(nameof(pathToBinDirectory));
             return this;
         }
 
         ICompletedHeadless ModelPath(string modelPath)
         {
-            _headless.ModelPath = modelPath ?? throw new ArgumentNullException(nameof(modelPath));
+            _headless.Config.ModelsPath =
+                modelPath ?? throw new ArgumentNullException(nameof(modelPath));
             return this;
         }
 
         ICompletedHeadless ICompletedHeadless.EnvironmentPath(string environmentIniPath)
         {
-            _headless.EnvironmentIniPath = environmentIniPath
+            _headless.Config.EnvironmentIniPath = environmentIniPath
                 ?? throw new ArgumentNullException(nameof(environmentIniPath));
             return this;
         }
 
         ICompletedHeadless ICompletedHeadless.BinDirectory(string pathToBinDirectory)
         {
-            _headless.TeklaBinPath = pathToBinDirectory
+            _headless.Config.TeklaBinPath = pathToBinDirectory
                 ?? throw new ArgumentNullException(nameof(pathToBinDirectory));
             return this;
         }
 
         public IHeadlessWithEnvironmentPath EnvironmentPath(string environmentIniPath)
         {
-            _headless.EnvironmentIniPath = environmentIniPath
+            _headless.Config.EnvironmentIniPath = environmentIniPath
                 ?? throw new ArgumentNullException(nameof(environmentIniPath));
             return this;
         }
 
         public ICompletedHeadless RolePath(string roleIniPath)
         {
-            _headless.RoleIniPath = roleIniPath;
+            _headless.Config.RoleIniPath = roleIniPath;
             return this;
         }
 
@@ -133,13 +137,5 @@ public sealed class Headless : IDisposable
         => TeklaService?.Dispose();
 
     public override string ToString()
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine($"TS binary directory: {TeklaBinPath}");
-        sb.AppendLine($"TS model path: {ModelPath}");
-        sb.AppendLine($"TS environment ini path: {EnvironmentIniPath}");
-        sb.AppendLine($"TS role ini path: {RoleIniPath}");
-
-        return sb.ToString();
-    }
+        => Config.ToString();
 }
