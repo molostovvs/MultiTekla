@@ -8,31 +8,25 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
     [CommandOption("headless", 's', Description = "Run plugin with headless Tekla")]
     public bool HeadlessOption { get; init; } = false;
 
-    [CommandOption("model-path", 'm', Description = "Path to model folder")]
-    public string? ModelPath { get; init; }
+    [CommandOption("model-name", 'm', Description = "Model Name")]
+    public string? ModelName { get; init; }
 
-    [CommandOption(
-        "config",
-        'c',
-        Description = "Config to use for headless run, if not specified, \"default.toml\" used"
-    )]
+    [CommandOption("config", 'c', Description = "Config to use for headless run")]
     public string ConfigName { get; init; } = "default";
 
     public ValueTask ExecuteAsync(IConsole console)
     {
-        if (ModelPath is null or "" || !Directory.Exists(ModelPath))
+        if (ModelName is null or "" || !Directory.Exists(ModelName))
             throw new ArgumentNullException(
-                nameof(ModelPath),
+                nameof(ModelName),
                 "Model path is not specified or doesn't exist"
             );
 
-        var modelPlugin = Plugin.Value;
+        var plugin = Plugin.Value;
+        plugin.ModelName = ModelName;
+        plugin.ConfigName = ConfigName;
 
-        var time = modelPlugin.StartHeadless(ConfigName, ModelPath);
-        console.Clear();
-        console.Output.WriteLine($"Headless initialization took {time.Seconds}s");
-
-        modelPlugin.Run();
+        plugin.Run();
 
         return default;
     }

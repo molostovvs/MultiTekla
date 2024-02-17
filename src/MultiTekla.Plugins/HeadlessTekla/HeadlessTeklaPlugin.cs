@@ -37,19 +37,24 @@ public class HeadlessTeklaPlugin : IPlugin<TimeSpan>
            .RolePath(Config.RoleIniPath)
            .Build();
 
-        if (Config.ModelPath is null or "")
+        if (Config.ModelsPath is null or "")
             throw new ArgumentNullException(
-                nameof(Config.ModelPath),
-                $"{Config.ModelPath} should not be null or empty"
+                nameof(Config.ModelsPath),
+                $"{Config.ModelsPath} should not be null or empty"
             );
 
-        if (!Directory.Exists(Config.ModelPath))
+        if (!Directory.Exists(Config.ModelsPath))
             throw new ArgumentNullException(
-                nameof(Config.ModelPath),
-                $"Directory with path {nameof(Config.ModelPath)} doesn't exist"
+                nameof(Config.ModelsPath),
+                $"Directory with path {nameof(Config.ModelsPath)} doesn't exist"
             );
 
-        headlessTs.Initialize(new DirectoryInfo(Config.ModelPath));
+        var initPath = Path.Combine(Config.ModelsPath, Config.ModelName);
+
+        if (!Directory.Exists(initPath))
+            Directory.CreateDirectory(initPath);
+
+        headlessTs.Initialize(new DirectoryInfo(initPath));
 
         sw.Stop();
 

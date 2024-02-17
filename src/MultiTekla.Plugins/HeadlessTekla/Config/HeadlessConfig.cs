@@ -1,14 +1,16 @@
+using System.IO;
 using System.Text;
 
 namespace MultiTekla.Plugins.Config;
 
 public class HeadlessConfig
 {
-    public string? Name { get; init; }
-    public string? TeklaBinPath { get; init; }
-    public string? EnvironmentIniPath { get; init; }
-    public string? RoleIniPath { get; init; }
-    public string? ModelPath { get; set; }
+    public string? Name { get; set; }
+    public string? TeklaBinPath { get; set; }
+    public string? EnvironmentIniPath { get; set; }
+    public string? RoleIniPath { get; set; }
+    public string? ModelsPath { get; set; }
+    public string? ModelName { get; set; }
 
     public override string ToString()
     {
@@ -18,7 +20,8 @@ public class HeadlessConfig
         sb.Append($"{nameof(TeklaBinPath)} = {TeklaBinPath}\n");
         sb.Append($"{nameof(EnvironmentIniPath)} = {EnvironmentIniPath}\n");
         sb.Append($"{nameof(RoleIniPath)} = {RoleIniPath}\n");
-        sb.Append($"{nameof(ModelPath)} = {ModelPath}");
+        sb.Append($"{nameof(ModelsPath)} = {ModelsPath}");
+        sb.Append($"{nameof(ModelName)} = {ModelName}");
 
         return sb.ToString();
     }
@@ -34,7 +37,8 @@ public class HeadlessConfig
             TeklaBinPath = config.TeklaBinPath ?? TeklaBinPath,
             EnvironmentIniPath = config.EnvironmentIniPath ?? EnvironmentIniPath,
             RoleIniPath = config.RoleIniPath ?? RoleIniPath,
-            ModelPath = config.ModelPath ?? ModelPath,
+            ModelsPath = config.ModelsPath ?? ModelsPath,
+            ModelName = config.ModelName ?? ModelName,
         };
     }
 }
