@@ -17,6 +17,11 @@ public abstract class PluginBase<TResult>
 
     protected virtual TimeSpan StartHeadless()
     {
+        if (HeadlessTeklaPlugin is null)
+            throw new ArgumentNullException(
+                $"{nameof(HeadlessTeklaPlugin)} Headless plugin was not initialized"
+            );
+
         var headless = HeadlessTeklaPlugin.Value;
         headless.Config = Config;
         return headless.Run();
@@ -24,5 +29,5 @@ public abstract class PluginBase<TResult>
 
     protected abstract TResult Run();
 
-    public Lazy<PluginBase<TimeSpan>> HeadlessTeklaPlugin { get; set; } = null!;
+    public Lazy<PluginBase<TimeSpan>>? HeadlessTeklaPlugin { get; set; }
 }

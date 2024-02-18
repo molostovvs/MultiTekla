@@ -1,4 +1,5 @@
 using System.IO;
+using MultiTekla.Plugins.Config;
 
 namespace MultiTekla.Plugins.ModelNamePlugin;
 
@@ -22,14 +23,19 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
                 "Model path is not specified or doesn't exist"
             );
 
+        var configPlugin = ConfigPlugin.Value;
+        var config = configPlugin.GetConfigWithName(ConfigName);
+        config.ModelName = ModelName;
+
         var plugin = Plugin.Value;
         plugin.ModelName = ModelName;
-        plugin.ConfigName = ConfigName;
+        plugin.Config = config;
 
-        plugin.Run();
+        plugin.RunPlugin();
 
         return default;
     }
 
     public Lazy<ModelNamePlugin> Plugin { get; set; } = null!;
+    public Lazy<HeadlessConfigPlugin> ConfigPlugin { get; set; } = null!;
 }

@@ -17,14 +17,14 @@ public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
     public ValueTask ExecuteAsync(IConsole console)
     {
         var configPlugin = ConfigPlugin.Value;
-        var config = configPlugin.GetConfigWithName(ConfigName ?? "default");
+        var config = configPlugin.GetConfigWithName(ConfigName);
         config.ModelName = ModelName;
 
         var plugin = Plugin.Value;
         plugin.ModelName = ModelName;
-        plugin.ConfigName = ConfigName;
+        plugin.Config = config;
 
-        plugin.Run();
+        plugin.RunPlugin();
 
         return default;
     }
