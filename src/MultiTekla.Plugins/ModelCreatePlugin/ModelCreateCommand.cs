@@ -1,3 +1,5 @@
+using MultiTekla.Plugins.Config;
+
 namespace MultiTekla.Plugins.ModelCreatePlugin;
 
 [Command("model create", Description = "Creates a model")]
@@ -14,6 +16,10 @@ public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
 
     public ValueTask ExecuteAsync(IConsole console)
     {
+        var configPlugin = ConfigPlugin.Value;
+        var config = configPlugin.GetConfigWithName(ConfigName ?? "default");
+        config.ModelName = ModelName;
+
         var plugin = Plugin.Value;
         plugin.ModelName = ModelName;
         plugin.ConfigName = ConfigName;
@@ -24,4 +30,5 @@ public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
     }
 
     public Lazy<ModelCreatePlugin> Plugin { get; set; } = null!;
+    public Lazy<HeadlessConfigPlugin> ConfigPlugin { get; set; } = null!;
 }

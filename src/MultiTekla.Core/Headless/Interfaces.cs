@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins.Core;
+namespace MultiTekla.Core.Headless;
 
 public interface IEmptyHeadless
 {
@@ -21,5 +21,5 @@ public interface ICompletedHeadless
     public ICompletedHeadless EnvironmentPath(string environmentIniPath);
     public ICompletedHeadless RolePath(string roleIniPath);
 
-    public Headless Build();
+    public Headless.Tekla Build();
 }

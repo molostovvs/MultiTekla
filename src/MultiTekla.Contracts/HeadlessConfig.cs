@@ -1,7 +1,7 @@
-using System.IO;
+using System;
 using System.Text;
 
-namespace MultiTekla.Plugins.Config;
+namespace MultiTekla.Contracts;
 
 public class HeadlessConfig
 {
