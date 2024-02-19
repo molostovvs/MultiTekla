@@ -6,8 +6,17 @@ using MultiTekla.Contracts;
 
 namespace MultiTekla.Core.Headless;
 
+/// <summary>
+/// Plugin for headless tekla initialization
+/// </summary>
 public class TeklaPlugin : PluginBase<TimeSpan>
 {
+    /// <summary>
+    /// Initialize the headless tekla/>
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">Config is null -or- Config file is invalid -or- Directory doesnt exist with path Config.ModelsPath + Config.ModelName
+    /// </exception>
     protected override TimeSpan Run()
     {
         if (Config is null)
@@ -16,9 +25,9 @@ public class TeklaPlugin : PluginBase<TimeSpan>
                 "You should provide config file when running tekla tekla"
             );
 
-        if (Config.TeklaBinPath is null || Config.EnvironmentIniPath is null
-            || Config.RoleIniPath is null)
-            throw new ArgumentException(
+        if (Config.TeklaBinPath is null or "" || Config.EnvironmentIniPath is null or ""
+            || Config.RoleIniPath is null or "")
+            throw new ArgumentNullException(
                 $"Config file is invalid, check {nameof(Config.TeklaBinPath)}, {
                     nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)
                     }"
@@ -60,6 +69,18 @@ public class TeklaPlugin : PluginBase<TimeSpan>
         return sw.Elapsed;
     }
 
+    /// <summary>
+    /// Resolves assembly loading for Tekla Structures binaries.
+    /// </summary>
+    /// <param name="args">The <see cref="ResolveEventArgs"/> containing the event data.</param>
+    /// <param name="tsBinDirectory">The directory path where Tekla Structures binaries are located.</param>
+    /// <returns>
+    /// The loaded assembly if found in the specified directory; otherwise, <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// This method is used to resolve assembly loading events for Tekla Structures binaries.
+    /// It attempts to load the requested assembly from the specified directory.
+    /// </remarks>
     private static Assembly? TeklaBinResolve(ResolveEventArgs args, string tsBinDirectory)
     {
         var requestedAssembly = new AssemblyName(args.Name);
