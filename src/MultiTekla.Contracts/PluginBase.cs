@@ -62,5 +62,3 @@ public abstract class PluginBase<TResult> : IPlugin
     /// </summary>
     public Lazy<PluginBase<TimeSpan>>? HeadlessTeklaPlugin { get; set; }
 }
-
-public interface IPlugin {}
