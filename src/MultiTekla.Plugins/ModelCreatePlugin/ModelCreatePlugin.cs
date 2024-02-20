@@ -1,4 +1,3 @@
-using System.Composition;
 using System.IO;
 using Tekla.Structures.Model;
 

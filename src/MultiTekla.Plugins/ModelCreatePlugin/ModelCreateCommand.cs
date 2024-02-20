@@ -21,6 +21,7 @@ public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
         config.ModelName = ModelName;
 
         var plugin = Plugin.Value;
+        plugin.Headless = HeadlessOption;
         plugin.ModelName = ModelName;
         plugin.Config = config;
 

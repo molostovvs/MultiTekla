@@ -1,4 +1,3 @@
-using System.IO;
 using MultiTekla.Plugins.Config;
 
 namespace MultiTekla.Plugins.ModelNamePlugin;
@@ -28,6 +27,7 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
         config.ModelName = ModelName;
 
         var plugin = Plugin.Value;
+        plugin.Headless = HeadlessOption;
         plugin.ModelName = ModelName;
         plugin.Config = config;
 

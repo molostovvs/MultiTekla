@@ -39,11 +39,7 @@ public class TeklaPlugin : PluginBase<TimeSpan>
         var sw = new Stopwatch();
         sw.Start();
 
-        var headlessTs = Core.Headless.Tekla.BuildHeadless.With()
-           .BinDirectory(Config.TeklaBinPath)
-           .EnvironmentPath(Config.EnvironmentIniPath)
-           .RolePath(Config.RoleIniPath)
-           .Build();
+        var headlessTs = Tekla.BuildHeadless.With().Config(Config).Build();
 
         if (Config.ModelsPath is null or "")
             throw new ArgumentNullException(

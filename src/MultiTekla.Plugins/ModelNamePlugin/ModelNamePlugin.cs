@@ -2,8 +2,6 @@ namespace MultiTekla.Plugins.ModelNamePlugin;
 
 public class ModelNamePlugin : PluginBase<Object>
 {
-    public string? ModelName { get; set; }
-
     protected override object Run()
     {
         var model = new Tekla.Structures.Model.Model();
