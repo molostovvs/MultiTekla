@@ -21,5 +21,5 @@ public interface ICompletedHeadless
     public ICompletedHeadless EnvironmentPath(string environmentIniPath);
     public ICompletedHeadless RolePath(string roleIniPath);
 
-    public Headless.Tekla Build();
+    public Tekla Build();
 }

@@ -1,11 +1,12 @@
 using System;
+using System.Composition;
 
 namespace MultiTekla.Contracts;
 
 /// <summary>
 /// Represents a base class for plugins that can be run in headless mode.
 /// </summary>
-public abstract class PluginBase<TResult>
+public abstract class PluginBase<TResult> : IPlugin
 {
     /// <summary>
     /// A property that determines whether the plugin should run in headless mode or not. Defaults to <see langword="false"/>;
@@ -61,3 +62,5 @@ public abstract class PluginBase<TResult>
     /// </summary>
     public Lazy<PluginBase<TimeSpan>>? HeadlessTeklaPlugin { get; set; }
 }
+
+public interface IPlugin {}

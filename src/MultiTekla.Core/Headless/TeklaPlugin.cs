@@ -15,8 +15,8 @@ public class TeklaPlugin : PluginBase<TimeSpan>
     /// Initialize the headless tekla/>
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException">Config is null -or- Config file is invalid -or- Directory doesnt exist with path Config.ModelsPath + Config.ModelName
-    /// </exception>
+    /// <exception cref="ArgumentNullException">Config is null</exception>
+    /// <exception cref="ArgumentException">Config is invalid</exception>
     protected override TimeSpan Run()
     {
         if (Config is null)
@@ -26,11 +26,11 @@ public class TeklaPlugin : PluginBase<TimeSpan>
             );
 
         if (Config.TeklaBinPath is null or "" || Config.EnvironmentIniPath is null or ""
-            || Config.RoleIniPath is null or "")
-            throw new ArgumentNullException(
+            || Config.RoleIniPath is null or "" || Config.ModelName is null or "")
+            throw new ArgumentException(
                 $"Config file is invalid, check {nameof(Config.TeklaBinPath)}, {
-                    nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)
-                    }"
+                    nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)}, {
+                        nameof(Config.ModelName)}"
             );
 
         AppDomain.CurrentDomain.AssemblyResolve +=
@@ -39,7 +39,7 @@ public class TeklaPlugin : PluginBase<TimeSpan>
         var sw = new Stopwatch();
         sw.Start();
 
-        var headlessTs = Tekla.BuildHeadless.With()
+        var headlessTs = Core.Headless.Tekla.BuildHeadless.With()
            .BinDirectory(Config.TeklaBinPath)
            .EnvironmentPath(Config.EnvironmentIniPath)
            .RolePath(Config.RoleIniPath)

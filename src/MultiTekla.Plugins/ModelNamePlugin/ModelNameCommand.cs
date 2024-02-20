@@ -17,10 +17,10 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
 
     public ValueTask ExecuteAsync(IConsole console)
     {
-        if (ModelName is null or "" || !Directory.Exists(ModelName))
-            throw new ArgumentNullException(
-                nameof(ModelName),
-                "Model path is not specified or doesn't exist"
+        if (ModelName is null or "")
+            throw new ArgumentException(
+                "The model name must be defined",
+                nameof(ModelName)
             );
 
         var configPlugin = ConfigPlugin.Value;

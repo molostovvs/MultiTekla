@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Composition.Convention;
 using System.Composition.Hosting;
@@ -5,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using MultiTekla.Contracts;
+using MultiTekla.Core.Headless;
 using ICommand = CliFx.ICommand;
 
 namespace MultiTekla.Core;
@@ -34,12 +36,14 @@ public class PluginManager
 
         var cb = new ConventionBuilder();
 
-        cb.ForTypesDerivedFrom(typeof(IPlugin<>))
+        cb.ForType<TeklaPlugin>().Export<PluginBase<TimeSpan>>().Shared();
+
+        cb.ForTypesDerivedFrom<IPlugin>()
            .Export()
-           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
-        cb.ForTypesDerivedFrom(typeof(ICommandFor<>))
-           .Export<ICommand>()
-           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
+           .ImportProperties(
+                p => p.Name.Contains("Plugin") && p.DeclaringType != typeof(TeklaPlugin)
+            );
+
         cb.ForTypesDerivedFrom<ICommand>()
            .Export<ICommand>()
            .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);

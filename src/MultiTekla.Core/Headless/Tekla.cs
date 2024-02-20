@@ -18,6 +18,12 @@ public sealed class Tekla : IDisposable
         bool useExistingLogin = false,
         string? organizationId = null)
     {
+        if (Config.ModelsPath is null)
+            throw new ArgumentNullException($"{nameof(Config.ModelsPath)} must be provided");
+
+        if (Config.ModelName is null)
+            throw new ArgumentNullException($"{nameof(Config.ModelName)} must be provided");
+
         modelPath ??= new DirectoryInfo(Path.Combine(Config.ModelsPath, Config.ModelName));
 
         TeklaService?.Initialize(
