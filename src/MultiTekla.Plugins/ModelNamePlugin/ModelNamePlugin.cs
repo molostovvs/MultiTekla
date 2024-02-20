@@ -1,14 +1,8 @@
-using MultiTekla.Plugins.Config;
-
 namespace MultiTekla.Plugins.ModelNamePlugin;
 
-public class ModelNamePlugin : IPlugin<object>
+public class ModelNamePlugin : PluginBase<Object>
 {
-    public string? ModelName { get; set; }
-    public string? ConfigName { get; set; }
-    private HeadlessConfig? HeadlessConfig { get; set; }
-
-    public object Run()
+    protected override object Run()
     {
         var model = new Tekla.Structures.Model.Model();
         var modelInfo = model.GetInfo();
@@ -22,18 +16,4 @@ public class ModelNamePlugin : IPlugin<object>
 
         return new object();
     }
-
-    private TimeSpan StartHeadless()
-    {
-        var configPlugin = HeadlessConfigPlugin.Value;
-        HeadlessConfig = configPlugin.GetConfigWithName(ConfigName ?? "default");
-        HeadlessConfig.ModelName = ModelName;
-
-        var headlessPlugin = HeadlessTeklaPlugin.Value;
-        headlessPlugin.Config = HeadlessConfig;
-        return headlessPlugin.Run();
-    }
-
-    public Lazy<HeadlessTeklaPlugin> HeadlessTeklaPlugin { get; set; } = null!;
-    public Lazy<HeadlessConfigPlugin> HeadlessConfigPlugin { get; set; } = null!;
 }

@@ -45,7 +45,7 @@ public class CreateHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
         }
 
         pluginValue.Config = config;
-        pluginValue.Run();
+        pluginValue.RunPlugin();
 
         return default;
     }

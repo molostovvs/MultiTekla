@@ -1,28 +1,36 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using MultiTekla.Plugins.Config;
-using MultiTekla.Plugins.Core;
+using MultiTekla.Contracts;
 
-namespace MultiTekla.Plugins;
+namespace MultiTekla.Core.Headless;
 
-public class HeadlessTeklaPlugin : IPlugin<TimeSpan>
+/// <summary>
+/// Plugin for headless tekla initialization
+/// </summary>
+public class TeklaPlugin : PluginBase<TimeSpan>
 {
-    public HeadlessConfig? Config { get; set; }
-
-    public TimeSpan Run()
+    /// <summary>
+    /// Initialize the headless tekla/>
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">Config is null</exception>
+    /// <exception cref="ArgumentException">Config is invalid</exception>
+    protected override TimeSpan Run()
     {
         if (Config is null)
             throw new ArgumentNullException(
                 nameof(Config),
-                "You should provide config file when running headless tekla"
+                "You should provide config file when running tekla tekla"
             );
 
-        if (Config.TeklaBinPath is null || Config.EnvironmentIniPath is null
-            || Config.RoleIniPath is null)
+        if (Config.TeklaBinPath is null or "" || Config.EnvironmentIniPath is null or ""
+            || Config.RoleIniPath is null or "" || Config.ModelName is null or "")
             throw new ArgumentException(
                 $"Config file is invalid, check {nameof(Config.TeklaBinPath)}, {
-                    nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)}"
+                    nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)}, {
+                        nameof(Config.ModelName)}"
             );
 
         AppDomain.CurrentDomain.AssemblyResolve +=
@@ -31,11 +39,7 @@ public class HeadlessTeklaPlugin : IPlugin<TimeSpan>
         var sw = new Stopwatch();
         sw.Start();
 
-        var headlessTs = Headless.BuildHeadless.With()
-           .BinDirectory(Config.TeklaBinPath)
-           .EnvironmentPath(Config.EnvironmentIniPath)
-           .RolePath(Config.RoleIniPath)
-           .Build();
+        var headlessTs = Tekla.BuildHeadless.With().Config(Config).Build();
 
         if (Config.ModelsPath is null or "")
             throw new ArgumentNullException(
@@ -61,6 +65,18 @@ public class HeadlessTeklaPlugin : IPlugin<TimeSpan>
         return sw.Elapsed;
     }
 
+    /// <summary>
+    /// Resolves assembly loading for Tekla Structures binaries.
+    /// </summary>
+    /// <param name="args">The <see cref="ResolveEventArgs"/> containing the event data.</param>
+    /// <param name="tsBinDirectory">The directory path where Tekla Structures binaries are located.</param>
+    /// <returns>
+    /// The loaded assembly if found in the specified directory; otherwise, <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// This method is used to resolve assembly loading events for Tekla Structures binaries.
+    /// It attempts to load the requested assembly from the specified directory.
+    /// </remarks>
     private static Assembly? TeklaBinResolve(ResolveEventArgs args, string tsBinDirectory)
     {
         var requestedAssembly = new AssemblyName(args.Name);

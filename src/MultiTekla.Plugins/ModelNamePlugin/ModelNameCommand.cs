@@ -1,4 +1,4 @@
-using System.IO;
+using MultiTekla.Plugins.Config;
 
 namespace MultiTekla.Plugins.ModelNamePlugin;
 
@@ -16,20 +16,26 @@ public class ModelNameCommand : ICommandFor<ModelNamePlugin>
 
     public ValueTask ExecuteAsync(IConsole console)
     {
-        if (ModelName is null or "" || !Directory.Exists(ModelName))
-            throw new ArgumentNullException(
-                nameof(ModelName),
-                "Model path is not specified or doesn't exist"
+        if (ModelName is null or "")
+            throw new ArgumentException(
+                "The model name must be defined",
+                nameof(ModelName)
             );
 
-        var plugin = Plugin.Value;
-        plugin.ModelName = ModelName;
-        plugin.ConfigName = ConfigName;
+        var configPlugin = ConfigPlugin.Value;
+        var config = configPlugin.GetConfigWithName(ConfigName);
+        config.ModelName = ModelName;
 
-        plugin.Run();
+        var plugin = Plugin.Value;
+        plugin.Headless = HeadlessOption;
+        plugin.ModelName = ModelName;
+        plugin.Config = config;
+
+        plugin.RunPlugin();
 
         return default;
     }
 
     public Lazy<ModelNamePlugin> Plugin { get; set; } = null!;
+    public Lazy<HeadlessConfigPlugin> ConfigPlugin { get; set; } = null!;
 }

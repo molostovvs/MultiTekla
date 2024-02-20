@@ -5,11 +5,9 @@ using Tomlyn;
 
 namespace MultiTekla.Plugins.Config;
 
-public class HeadlessConfigPlugin : IPlugin<bool>
+public class HeadlessConfigPlugin : PluginBase<bool>
 {
-    public HeadlessConfig? Config { get; set; }
-
-    public bool Run()
+    protected override bool Run()
     {
         var toml = Toml.FromModel(Config ?? new HeadlessConfig());
 
