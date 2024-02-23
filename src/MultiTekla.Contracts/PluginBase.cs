@@ -1,5 +1,4 @@
 using System;
-using System.Composition;
 
 namespace MultiTekla.Contracts;
 
