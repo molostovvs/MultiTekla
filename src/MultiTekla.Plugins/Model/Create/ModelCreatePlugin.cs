@@ -1,7 +1,7 @@
 using System.IO;
 using Tekla.Structures.Model;
 
-namespace MultiTekla.Plugins.ModelCreatePlugin;
+namespace MultiTekla.Plugins.Model.Create;
 
 public class ModelCreatePlugin : PluginBase<bool>
 {
