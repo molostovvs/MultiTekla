@@ -16,12 +16,12 @@ public class HeadlessConfig
     {
         var sb = new StringBuilder();
 
-        sb.Append($"Config name = {Name}\n");
-        sb.Append($"{nameof(TeklaBinPath)} = {TeklaBinPath}\n");
-        sb.Append($"{nameof(EnvironmentIniPath)} = {EnvironmentIniPath}\n");
-        sb.Append($"{nameof(RoleIniPath)} = {RoleIniPath}\n");
-        sb.Append($"{nameof(ModelsPath)} = {ModelsPath}");
-        sb.Append($"{nameof(ModelName)} = {ModelName}");
+        sb.AppendLine($"Config name = {Name}");
+        sb.AppendLine($"{nameof(TeklaBinPath)} = {TeklaBinPath}");
+        sb.AppendLine($"{nameof(EnvironmentIniPath)} = {EnvironmentIniPath}");
+        sb.AppendLine($"{nameof(RoleIniPath)} = {RoleIniPath}");
+        sb.AppendLine($"{nameof(ModelsPath)} = {ModelsPath}");
+        sb.AppendLine($"{nameof(ModelName)} = {ModelName}");
 
         return sb.ToString();
     }
