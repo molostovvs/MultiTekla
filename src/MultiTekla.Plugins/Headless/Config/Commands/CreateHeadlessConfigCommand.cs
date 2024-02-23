@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins.Config.Commands;
+namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config create", Description = "Create config file for headless tekla plugin")]
 public class CreateHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>

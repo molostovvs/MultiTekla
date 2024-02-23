@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins.Config.Commands;
+namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config remove", Description = "Delete the config file")]
 public class RemoveHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>

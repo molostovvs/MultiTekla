@@ -1,6 +1,6 @@
-using MultiTekla.Plugins.Config;
+using MultiTekla.Plugins.Headless.Config;
 
-namespace MultiTekla.Plugins.ModelCreatePlugin;
+namespace MultiTekla.Plugins.Model.Create;
 
 [Command("model create", Description = "Creates a model")]
 public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>

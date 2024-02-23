@@ -5,3 +5,4 @@ global using System.Threading.Tasks;
 global using CliFx.Attributes;
 global using CliFx.Infrastructure;
 global using MultiTekla.Contracts;
+global using TSM = Tekla.Structures.Model;
