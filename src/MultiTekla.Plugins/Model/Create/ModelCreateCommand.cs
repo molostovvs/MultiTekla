@@ -18,7 +18,13 @@ public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
     {
         var configPlugin = ConfigPlugin.Value;
         var config = configPlugin.GetConfigWithName(ConfigName);
-        config.ModelName = ModelName;
+        if (!string.IsNullOrEmpty(ModelName))
+            config.ModelName = ModelName;
+
+        if (string.IsNullOrEmpty(config.ModelName))
+            throw new ArgumentException(
+                "You must provide the model name either in the config or in the command"
+            );
 
         var plugin = Plugin.Value;
         plugin.Headless = HeadlessOption;

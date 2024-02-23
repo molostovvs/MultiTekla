@@ -13,18 +13,18 @@ public class ModelCreatePlugin : PluginBase<bool>
     {
         var handler = new ModelHandler();
 
-        if (ModelName is null or "" && Headless)
-            throw new ArgumentException(nameof(ModelName), $"{nameof(ModelName)} is not specified");
-
-        if (Config is null && Headless)
+        if (Config is null && Headless is not false)
             throw new ArgumentException(nameof(Config), $"{nameof(Config)} is not specified");
+
+        if ((ModelName is null or "" || Config!.ModelName is null or "") && Headless)
+            throw new ArgumentException(nameof(ModelName), $"{nameof(ModelName)} is not specified");
 
         //TODO: implement plugin for non-headless run
         if (Headless)
         {
             var singleModelCreateSuccess = handler.CreateNewSingleUserModel(
                 ModelName,
-                Config.ModelsPath,
+                Config!.ModelsPath,
                 Template ?? ""
             );
 
@@ -38,7 +38,7 @@ public class ModelCreatePlugin : PluginBase<bool>
 
                 var multiuserConvertResult =
                     Tekla.Structures.ModelInternal.Operation.dotConvertAndOpenAsMultiUserModel(
-                        Path.Combine(Config.ModelsPath, Config.ModelName),
+                        Path.Combine(Config!.ModelsPath, Config!.ModelName),
                         ServerName
                     );
 
