@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using Tomlyn;
 
-namespace MultiTekla.Plugins.Config;
+namespace MultiTekla.Plugins.Headless.Config;
 
 public class HeadlessConfigPlugin : PluginBase<bool>
 {
