@@ -28,7 +28,7 @@ public sealed class Tekla : IDisposable
 
         TeklaService?.Initialize(
             modelPath,
-            license,
+            "FULL",
             trimbleIdentityIdToken,
             trimbleAccessToken,
             useExistingLogin,
