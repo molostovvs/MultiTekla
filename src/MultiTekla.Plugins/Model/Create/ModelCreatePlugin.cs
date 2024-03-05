@@ -3,28 +3,28 @@ using Tekla.Structures.Model;
 
 namespace MultiTekla.Plugins.Model.Create;
 
-public class ModelCreatePlugin : PluginBase<bool>
+public class ModelCreatePlugin : PluginBase
 {
     public bool MultiUser { get; set; }
     public string? Template { get; set; }
     public string? ServerName { get; set; }
 
-    protected override bool Run()
+    protected override void Run()
     {
         var handler = new ModelHandler();
 
-        if (Config is null && Headless is not false)
+        if (Config is null && IsHeadlessMode is not false)
             throw new ArgumentException(nameof(Config), $"{nameof(Config)} is not specified");
 
-        if ((ModelName is null or "" || Config!.ModelName is null or "") && Headless)
-            throw new ArgumentException(nameof(ModelName), $"{nameof(ModelName)} is not specified");
+        if (string.IsNullOrEmpty(Config?.ModelName) && IsHeadlessMode)
+            throw new ArgumentException("Model name is not specified for headless run");
 
         //TODO: implement plugin for non-headless run
-        if (Headless)
+        if (IsHeadlessMode)
         {
             var singleModelCreateSuccess = handler.CreateNewSingleUserModel(
-                ModelName,
-                Config!.ModelsPath,
+                Config!.ModelName,
+                Config.ModelsPath,
                 Template ?? ""
             );
 
@@ -38,16 +38,10 @@ public class ModelCreatePlugin : PluginBase<bool>
 
                 var multiuserConvertResult =
                     Tekla.Structures.ModelInternal.Operation.dotConvertAndOpenAsMultiUserModel(
-                        Path.Combine(Config!.ModelsPath, Config!.ModelName),
+                        Path.Combine(Config.ModelsPath, Config!.ModelName),
                         ServerName
                     );
-
-                return multiuserConvertResult;
             }
-
-            return singleModelCreateSuccess;
         }
-
-        return false;
     }
 }

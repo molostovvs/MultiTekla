@@ -4,18 +4,15 @@ namespace MultiTekla.Plugins.Headless.Config.Commands;
     "headless config list",
     Description = "Get the list of config files for headless tekla plugin"
 )]
-public class ListHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
+public class ListHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
 {
-    public ValueTask ExecuteAsync(IConsole console)
+    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
     {
-        var pluginValue = Plugin.Value;
+        var configs = plugin.GetAllConfigNames();
 
-        var configs = pluginValue.GetAllConfigNames();
         foreach (var config in configs)
             console.Output.WriteLine(config);
 
         return default;
     }
-
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }

@@ -1,20 +1,12 @@
 namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config print", Description = "Prints headless config")]
-public class PrintHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
+public class PrintHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
 {
-    [CommandOption("name", 'n', Description = "Name of the config file")]
-    public string ConfigName { get; init; } = "default";
-
-    public ValueTask ExecuteAsync(IConsole console)
+    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
     {
-        var plugin = Plugin.Value;
-        var config = plugin.GetConfigWithName(ConfigName);
-
-        console.Output.WriteLine(config);
+        console.Output.WriteLine(plugin.GetConfigWithName(ConfigName));
 
         return default;
     }
-
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }
