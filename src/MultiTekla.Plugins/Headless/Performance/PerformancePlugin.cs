@@ -1,7 +1,7 @@
 namespace MultiTekla.Plugins.Headless.Performance;
 
-public class PerformancePlugin : PluginBase<bool>
+public class PerformancePlugin : PluginBase
 {
-    protected override bool Run()
+    protected override void Run()
         => new TSM.Model().GetConnectionStatus();
 }

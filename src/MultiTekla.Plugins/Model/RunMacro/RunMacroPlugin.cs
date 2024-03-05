@@ -9,7 +9,7 @@ using Tekla.Structures;
 
 namespace MultiTekla.Plugins.Model.RunMacro;
 
-public class RunMacroPlugin : PluginBase<bool>
+public class RunMacroPlugin : PluginBase
 {
     public string? MacroName { get; set; }
 
@@ -32,7 +32,7 @@ public class RunMacroPlugin : PluginBase<bool>
 
         return TSM.Operations.Operation.RunMacro(MacroName);
     }*/
-    protected override bool Run()
+    protected override void Run()
     {
         if (MacroName is null or "")
             throw new ArgumentException("You must provide name of macro to run");
@@ -42,16 +42,14 @@ public class RunMacroPlugin : PluginBase<bool>
         var compiledMacroPath = FindCompiledMacro(macroDirectories, MacroName);
 
         if (compiledMacroPath is not null)
-            return StartMacro(Assembly.LoadFile(compiledMacroPath));
+            StartMacro(Assembly.LoadFile(compiledMacroPath));
 
         var pathToMacroFile = GetPathToMacroFile(macroDirectories, MacroName);
 
         StartMacro(CompileScript(pathToMacroFile).CompiledAssembly);
-
-        return true;
     }
 
-    private static bool StartMacro(Assembly macroAssembly)
+    private static void StartMacro(Assembly macroAssembly)
     {
         var macroMethod = macroAssembly.GetTypes()
            .Select(t => t.GetMethod("Run", BindingFlags.Public | BindingFlags.Static))
@@ -66,7 +64,6 @@ public class RunMacroPlugin : PluginBase<bool>
             throw new ApplicationException("Couldn't find a macro method to call.");
 
         macroMethod.Invoke(null, null);
-        return true;
     }
 
     private static string? FindCompiledMacro(IEnumerable<string> macroDirectories, string macroName)

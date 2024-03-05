@@ -9,7 +9,7 @@ namespace MultiTekla.Core.Headless;
 /// <summary>
 /// Plugin for headless tekla initialization
 /// </summary>
-public class TeklaPlugin : PluginBase<TimeSpan>
+public class TeklaPlugin : PluginBase
 {
     /// <summary>
     /// Initialize the headless tekla/>
@@ -17,7 +17,7 @@ public class TeklaPlugin : PluginBase<TimeSpan>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException">Config is null</exception>
     /// <exception cref="ArgumentException">Config is invalid</exception>
-    protected override TimeSpan Run()
+    protected override void Run()
     {
         if (Config is null)
             throw new ArgumentNullException(
@@ -35,9 +35,6 @@ public class TeklaPlugin : PluginBase<TimeSpan>
 
         AppDomain.CurrentDomain.AssemblyResolve +=
             (_, a) => TeklaBinResolve(a, @"C:\TeklaStructures\2022.0\bin\");
-
-        var sw = new Stopwatch();
-        sw.Start();
 
         var headlessTs = Tekla.BuildHeadless.With().Config(Config).Build();
 
@@ -59,10 +56,6 @@ public class TeklaPlugin : PluginBase<TimeSpan>
             Directory.CreateDirectory(initPath);
 
         headlessTs.Initialize(new DirectoryInfo(initPath));
-
-        sw.Stop();
-
-        return sw.Elapsed;
     }
 
     /// <summary>

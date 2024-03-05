@@ -1,10 +1,8 @@
 namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config", Description = "Manage config file for headless tekla")]
-public class RootHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
+public class RootHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
 {
-    public ValueTask ExecuteAsync(IConsole console)
+    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
         => default;
-
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }

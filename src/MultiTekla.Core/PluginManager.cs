@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Composition.Convention;
 using System.Composition.Hosting;
@@ -36,9 +35,11 @@ public class PluginManager
 
         var cb = new ConventionBuilder();
 
-        cb.ForType<TeklaPlugin>().Export<PluginBase<TimeSpan>>().Shared();
+        cb.ForType<TeklaPlugin>().Export<PluginBase>().Shared();
 
-        cb.ForTypesDerivedFrom<IPlugin>()
+        cb.ForTypesDerivedFrom<IHeadlessConfigPlugin>().Export<IHeadlessConfigPlugin>();
+
+        cb.ForTypesDerivedFrom<PluginBase>()
            .Export()
            .ImportProperties(
                 p => p.Name.Contains("Plugin") && p.DeclaringType != typeof(TeklaPlugin)

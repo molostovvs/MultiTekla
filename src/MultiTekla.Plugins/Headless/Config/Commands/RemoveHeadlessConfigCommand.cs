@@ -1,20 +1,18 @@
 namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config remove", Description = "Delete the config file")]
-public class RemoveHeadlessConfigCommand : ICommandFor<HeadlessConfigPlugin>
+public class RemoveHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
 {
     [CommandParameter(0, Name = "CONFIG NAME")]
     public required string ConfigNameToRemove { get; init; }
 
-    public ValueTask ExecuteAsync(IConsole console)
+    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
     {
-        var pluginValue = Plugin.Value;
+        var res = plugin.Remove(ConfigNameToRemove);
 
-        var res = pluginValue.Remove(ConfigNameToRemove);
         if (res.success)
             console.Output.WriteLine($"{res.configFileName} removed successfully");
+
         return default;
     }
-
-    public Lazy<HeadlessConfigPlugin> Plugin { get; set; } = null!;
 }

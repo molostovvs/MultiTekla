@@ -1,41 +1,11 @@
-using MultiTekla.Plugins.Headless.Config;
-
 namespace MultiTekla.Plugins.Model.Create;
 
 [Command("model create", Description = "Creates a model")]
-public class ModelCreateCommand : ICommandFor<ModelCreatePlugin>
+public class ModelCreateCommand : CommandBase<ModelCreatePlugin>
 {
-    [CommandOption("headless", 's', Description = "Run plugin with headless tekla")]
-    public bool HeadlessOption { get; init; } = false;
-
-    [CommandOption("config", 'c', Description = "Config to use for headless run")]
-    public string ConfigName { get; init; } = "default";
-
-    [CommandOption("model-name", 'm', Description = "Model name")]
-    public string? ModelName { get; init; }
-
-    public ValueTask ExecuteAsync(IConsole console)
+    protected override ValueTask Execute(IConsole console, ModelCreatePlugin plugin)
     {
-        var configPlugin = ConfigPlugin.Value;
-        var config = configPlugin.GetConfigWithName(ConfigName);
-        if (!string.IsNullOrEmpty(ModelName))
-            config.ModelName = ModelName;
-
-        if (string.IsNullOrEmpty(config.ModelName))
-            throw new ArgumentException(
-                "You must provide the model name either in the config or in the command"
-            );
-
-        var plugin = Plugin.Value;
-        plugin.Headless = HeadlessOption;
-        plugin.ModelName = ModelName;
-        plugin.Config = config;
-
         plugin.RunPlugin();
-
         return default;
     }
-
-    public Lazy<ModelCreatePlugin> Plugin { get; set; } = null!;
-    public Lazy<HeadlessConfigPlugin> ConfigPlugin { get; set; } = null!;
 }
