@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins.Model.Create;
+﻿namespace MultiTekla.Plugins.Model.Create;
 
 [Command("model create", Description = "Creates a model")]
 public class ModelCreateCommand : CommandBase<ModelCreatePlugin>

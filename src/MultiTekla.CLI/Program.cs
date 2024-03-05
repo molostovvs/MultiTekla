@@ -11,6 +11,7 @@ public static class Program
     {
         var pluginComposition = new PluginManager().ConfigurePluginComposition();
         using var pluginsContainer = pluginComposition.CreateContainer();
+
         var cliCommands = pluginsContainer.GetExports<ICommand>().ToArray();
 
         return await ConfigureCliApp(cliCommands).RunAsync();

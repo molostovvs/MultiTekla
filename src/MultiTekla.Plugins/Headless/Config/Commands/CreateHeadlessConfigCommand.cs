@@ -1,7 +1,7 @@
-namespace MultiTekla.Plugins.Headless.Config.Commands;
+﻿namespace MultiTekla.Plugins.Headless.Config;
 
 [Command("headless config create", Description = "Create config file for headless tekla plugin")]
-public class CreateHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
+public class CreateHeadlessConfigCommand : CommandBase<CreateHeadlessConfigPlugin>
 {
     [CommandOption("bin-path", 'b', Description = "Path to Tekla /bin/ directory")]
     public string? TeklaBinPath { get; init; }
@@ -18,7 +18,7 @@ public class CreateHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
     [CommandOption("from-config", 'f', Description = "Reuse values from existing config file")]
     public string? FromConfigName { get; init; }
 
-    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
+    protected override ValueTask Execute(IConsole console, CreateHeadlessConfigPlugin plugin)
     {
         var config = new HeadlessConfig
         {
@@ -32,7 +32,19 @@ public class CreateHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
 
         if (FromConfigName is not null)
         {
-            var existedConfig = plugin.GetConfigWithName(FromConfigName);
+            var headlessConfigPluginGetter = new GetHeadlessConfigPlugin();
+            headlessConfigPluginGetter.Config = new HeadlessConfig { Name = FromConfigName, };
+
+            headlessConfigPluginGetter.RunPlugin();
+
+            var existedConfig = headlessConfigPluginGetter.Result;
+
+            if (existedConfig is null)
+                throw new ArgumentException(
+                    $"There is no config with name {FromConfigName}",
+                    nameof(FromConfigName)
+                );
+
             config = existedConfig.CreateFrom(config);
         }
 

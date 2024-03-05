@@ -1,4 +1,7 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using CliFx;
 using CliFx.Attributes;
@@ -54,19 +57,24 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// <exception cref="ArgumentException">Thrown if the model name is not provided.</exception>
     public ValueTask ExecuteAsync(IConsole console)
     {
-        var plugin = Plugin?.Value;
+        var plugin =
+            Plugins?.FirstOrDefault(p => p.Value.GetType() == typeof(TPlugin))?.Value as TPlugin;
 
         if (plugin is null)
-            throw new ApplicationException($"Plugin is not initialized");
+            throw new ApplicationException($"Plugins is not initialized");
 
         if (IsHeadlessMode)
         {
             var configPlugin = ConfigPlugin?.Value;
 
             if (configPlugin is null)
-                throw new ApplicationException("Plugin for headless config is not initialized");
+                throw new ApplicationException("Plugins for headless config is not initialized");
 
-            var config = configPlugin.GetConfigWithName(ConfigName);
+            configPlugin.Config = new HeadlessConfig { Name = ConfigName, };
+            configPlugin.IsHeadlessMode = false;
+            configPlugin.RunPlugin();
+
+            var config = configPlugin.Config;
 
             if (!string.IsNullOrEmpty(ModelName))
                 config.ModelName = ModelName;
@@ -100,11 +108,11 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// <summary>
     /// The lazily loaded instance of the plugin to be executed.
     /// </summary>
-    public Lazy<TPlugin>? Plugin { get; set; }
+    public IEnumerable<Lazy<PluginBase>>? Plugins { get; set; }
 
     /// <summary>
     /// The lazily loaded instance of the plugin for retrieving headless configurations.
     /// </summary>
-    //TODO: replace this with Lazy<PluginBase> and metadata constraint
-    public Lazy<IHeadlessConfigPlugin>? ConfigPlugin { get; set; }
+    [ImportMetadataConstraint("name", "GetHeadlessConfigPlugin")]
+    public Lazy<PluginBase>? ConfigPlugin { get; set; }
 }

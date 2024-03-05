@@ -1,5 +1,4 @@
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using MultiTekla.Contracts;
@@ -7,7 +6,7 @@ using MultiTekla.Contracts;
 namespace MultiTekla.Core.Headless;
 
 /// <summary>
-/// Plugin for headless tekla initialization
+/// Plugins for headless tekla initialization
 /// </summary>
 public class TeklaPlugin : PluginBase
 {
@@ -28,9 +27,7 @@ public class TeklaPlugin : PluginBase
         if (Config.TeklaBinPath is null or "" || Config.EnvironmentIniPath is null or ""
             || Config.RoleIniPath is null or "" || Config.ModelName is null or "")
             throw new ArgumentException(
-                $"Config file is invalid, check {nameof(Config.TeklaBinPath)}, {
-                    nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)}, {
-                        nameof(Config.ModelName)}"
+                $"Config file is invalid, check {nameof(Config.TeklaBinPath)}, {nameof(Config.EnvironmentIniPath)}, {nameof(Config.RoleIniPath)}, {nameof(Config.ModelName)}"
             );
 
         AppDomain.CurrentDomain.AssemblyResolve +=
@@ -74,7 +71,7 @@ public class TeklaPlugin : PluginBase
     {
         var requestedAssembly = new AssemblyName(args.Name);
 
-        return File.Exists(Path.Combine(tsBinDirectory,      requestedAssembly.Name + ".dll"))
+        return File.Exists(Path.Combine(tsBinDirectory, requestedAssembly.Name + ".dll"))
             ? Assembly.LoadFile(Path.Combine(tsBinDirectory, requestedAssembly.Name + ".dll"))
             : null;
     }
