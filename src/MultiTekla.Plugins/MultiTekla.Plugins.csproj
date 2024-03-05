@@ -34,7 +34,7 @@
               Condition="'$(TargetFramework)' == 'net48'"/>
         <Message Importance="high" Text="Copied plugins to CLI app" Condition="'$(TargetFramework)' == 'net48'"/>
 
-        <Copy SourceFiles="$(OutputPath)/MultiTekla.Plugins.dll;$(OutputPath)/Tomlyn.dll"
+        <Copy SourceFiles="$(OutputPath)/MultiTekla.Plugins.dll;$(OutputPath)/Tomlyn.dll;$(OutputPath)/System.CodeDom.dll"
               DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net8.0/plugins"
               Condition="'$(TargetFramework)' == 'net8.0'"/>
         <Message Importance="high" Text="Copied plugins to CLI app" Condition="'$(TargetFramework)' == 'net8.0'"/>
