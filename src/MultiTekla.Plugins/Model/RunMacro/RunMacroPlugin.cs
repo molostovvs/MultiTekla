@@ -1,4 +1,4 @@
-using System.CodeDom.Compiler;
+﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,7 +53,7 @@ public class RunMacroPlugin : PluginBase
     {
         var macroMethod = macroAssembly.GetTypes()
            .Select(t => t.GetMethod("Run", BindingFlags.Public | BindingFlags.Static))
-            //TODO: implement discovering methods without attribute
+           //TODO: implement discovering methods without attribute
            .First(
                 m => m?.GetCustomAttributes()
                        .First(a => a.ToString() == TeklaMacrosEntrypointAttributeName)

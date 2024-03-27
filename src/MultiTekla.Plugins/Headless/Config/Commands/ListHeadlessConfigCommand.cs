@@ -1,17 +1,17 @@
-namespace MultiTekla.Plugins.Headless.Config.Commands;
+﻿namespace MultiTekla.Plugins.Headless.Config;
 
 [Command(
     "headless config list",
     Description = "Get the list of config files for headless tekla plugin"
 )]
-public class ListHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
+public class ListHeadlessConfigCommand : CommandBase<ListHeadlessConfigPlugin>
 {
-    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
+    protected override ValueTask Execute(IConsole console, ListHeadlessConfigPlugin plugin)
     {
-        var configs = plugin.GetAllConfigNames();
+        plugin.RunPlugin();
 
-        foreach (var config in configs)
-            console.Output.WriteLine(config);
+        foreach (var configFileName in plugin.Result)
+            console.Output.WriteLine(configFileName);
 
         return default;
     }

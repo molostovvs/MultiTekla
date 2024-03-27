@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MultiTekla.Contracts;
 
@@ -8,9 +8,9 @@ namespace MultiTekla.Contracts;
 public abstract class PluginBase
 {
     /// <summary>
-    /// Indicates whether the plugin operates in headless mode. Default to <see langword="true"/>
+    /// Indicates whether the plugin operates in headless mode.
     /// </summary>
-    public bool IsHeadlessMode { get; set; } = true;
+    public bool IsHeadlessMode { get; set; }
 
     /// <summary>
     /// Config for the plugin if it runs in headless mode.
@@ -55,5 +55,7 @@ public abstract class PluginBase
     /// <summary>
     /// Lazily loaded instance of the `HeadlessTeklaPlugin` class, used specifically in headless mode scenarios.
     /// </summary>
+    [System.Composition.Import(AllowDefault = true)]
+    [System.Composition.ImportMetadataConstraint("name", "TeklaPlugin")]
     public Lazy<PluginBase>? HeadlessTeklaPlugin { get; set; }
 }

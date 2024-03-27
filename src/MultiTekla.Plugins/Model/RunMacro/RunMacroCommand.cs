@@ -1,4 +1,4 @@
-namespace MultiTekla.Plugins.Model.RunMacro;
+﻿namespace MultiTekla.Plugins.Model.RunMacro;
 
 [Command("model run macro", Description = "Run the macro")]
 public class RunMacroCommand : CommandBase<RunMacroPlugin>

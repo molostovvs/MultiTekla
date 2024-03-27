@@ -1,11 +1,13 @@
-namespace MultiTekla.Plugins.Headless.Config.Commands;
+﻿namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config print", Description = "Prints headless config")]
-public class PrintHeadlessConfigCommand : CommandBase<HeadlessConfigPlugin>
+public class PrintHeadlessConfigCommand : CommandBase<GetHeadlessConfigPlugin>
 {
-    protected override ValueTask Execute(IConsole console, HeadlessConfigPlugin plugin)
+    protected override ValueTask Execute(IConsole console, GetHeadlessConfigPlugin plugin)
     {
-        console.Output.WriteLine(plugin.GetConfigWithName(ConfigName));
+        plugin.Config = new HeadlessConfig { Name = ConfigName, };
+        plugin.RunPlugin();
+        console.Output.WriteLine(plugin.Result);
 
         return default;
     }
