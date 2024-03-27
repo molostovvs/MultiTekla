@@ -6,6 +6,7 @@ public class PrintHeadlessConfigCommand : CommandBase<GetHeadlessConfigPlugin>
     protected override ValueTask Execute(IConsole console, GetHeadlessConfigPlugin plugin)
     {
         plugin.Config = new HeadlessConfig { Name = ConfigName, };
+        plugin.RunPlugin();
         console.Output.WriteLine(plugin.Result);
 
         return default;
