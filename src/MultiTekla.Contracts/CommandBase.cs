@@ -24,10 +24,10 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// Value indicating whether the command should run the plugin in headless mode.
     /// </summary>
     /// <value>
-    /// <c>true</c> if the command should run in headless mode; otherwise, <c>false</c>. Default is <c>true</c>.
+    /// <c>true</c> if the command should run in headless mode; otherwise, <c>false</c>. Default is <c>false</c>.
     /// </value>
     [CommandOption("headless", 's', Description = "Run plugin with headless tekla")]
-    public bool IsHeadlessMode { get; init; } = true;
+    public bool IsHeadlessMode { get; init; } = false;
 
     /// <summary>
     /// The name of the configuration to use for a headless run.
