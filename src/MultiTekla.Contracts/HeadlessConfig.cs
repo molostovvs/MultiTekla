@@ -21,7 +21,7 @@ public class HeadlessConfig
         sb.AppendLine($"{nameof(EnvironmentIniPath)} = {EnvironmentIniPath}");
         sb.AppendLine($"{nameof(RoleIniPath)} = {RoleIniPath}");
         sb.AppendLine($"{nameof(ModelsPath)} = {ModelsPath}");
-        sb.AppendLine($"{nameof(ModelName)} = {ModelName}");
+        sb.Append($"{nameof(ModelName)} = {ModelName}");
 
         return sb.ToString();
     }
