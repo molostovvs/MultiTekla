@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using Tomlyn;
 
 namespace MultiTekla.Plugins.Headless.Config;
@@ -17,6 +17,8 @@ public class GetHeadlessConfigPlugin : PluginBase
                 nameof(Config.Name),
                 "You must provide config name"
             );
+
+        configFileName = configFileName.Replace(".toml", "");
 
         var configPath = Path.Combine("plugins", configFileName + ".toml");
 
