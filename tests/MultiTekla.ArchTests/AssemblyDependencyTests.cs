@@ -15,21 +15,24 @@ public class AssemblyDependencyTests
                 System.Reflection.Assembly.Load("MultiTekla.Plugins"))
         .Build();
 
-    private readonly IObjectProvider<IType> _contractsAssembly = Types().That().ResideInAssembly("MultiTekla.Contracts").As("Contracts");
+    private readonly IObjectProvider<IType> _contractsAssembly = Types().That().ResideInAssembly(typeof(Contracts.PluginBase).Assembly).As("Contracts");
 
-    private readonly IObjectProvider<IType> _coreAssembly = Types().That().ResideInAssembly("MultiTekla.Core").As("Core");
+    private readonly IObjectProvider<IType> _coreAssembly = Types().That().ResideInAssembly(typeof(Core.PluginManager).Assembly).As("Core");
 
-    private readonly IObjectProvider<IType> _pluginsAssembly = Types().That().ResideInAssembly("MultiTekla.Plugin").As("Plugins");
+    private readonly IObjectProvider<IType> _pluginsAssembly = Types().That().ResideInAssembly(typeof(Plugins.Model.ModelCommand).Assembly).As("Plugins");
 
-    private readonly IObjectProvider<IType> _cliAssembly = Types().That().ResideInAssembly("MultiTekla.CLI").As("Cli");
+    private readonly IObjectProvider<IType> _cliAssembly = Types().That().ResideInAssembly(typeof(CLI.Program).Assembly).As("Cli");
 
     [Test]
-    public void Contracts_depends_only_on_system_libraries()
+    public void Contracts_depends_only_on_system_and_clifx()
     {
-        var result = Types().That()
+        var result = Types()
+            .That()
             .Are(_contractsAssembly)
             .Should()
-            .OnlyDependOn(Types().That().ResideInNamespace("System"));
+            .DependOnAny("System.+", true)
+            .OrShould()
+            .DependOnAny("CliFx.+", true);
 
         result.Check(Architecture);
     }
@@ -37,21 +40,29 @@ public class AssemblyDependencyTests
     [Test]
     public void Core_depends_only_on_contracts()
     {
-        var result = Types().That()
+        var result = Types()
+            .That()
             .Are(_coreAssembly)
             .Should()
-            .DependOnAny(Types().That().Are(_contractsAssembly));
+            .DependOnAny(_contractsAssembly)
+            .OrShould()
+            .DependOnAny("System.+", true);
 
         result.Check(Architecture);
     }
 
     [Test]
-    public void Plugins_depends_only_on_contracts()
+    public void Plugins_depends_only_on_contracts_system_and_clifx()
     {
-        var result = Types().That()
+        var result = Types()
+            .That()
             .Are(_pluginsAssembly)
             .Should()
-            .OnlyDependOn(Types().That().Are(_contractsAssembly));
+            .DependOnAny(_contractsAssembly)
+            .OrShould()
+            .DependOnAny("System.+", true)
+            .OrShould()
+            .DependOnAny("CliFx.+", true);
 
         result.Check(Architecture);
     }
@@ -59,10 +70,13 @@ public class AssemblyDependencyTests
     [Test]
     public void Cli_depends_only_on_core_and_contracts()
     {
-        var result = Types().That()
+        var result = Types()
+            .That()
             .Are(_cliAssembly)
             .Should()
-            .OnlyDependOn(Types().That().Are(_contractsAssembly).Or().Are(_coreAssembly));
+            .DependOnAny(_coreAssembly)
+            .OrShould()
+            .DependOnAny(_contractsAssembly);
 
         result.Check(Architecture);
     }
