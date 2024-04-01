@@ -1,11 +1,11 @@
-using System.IO;
+﻿using System.IO;
 
 namespace MultiTekla.Plugins.Headless.Config;
 
 /// <summary>
 /// Remove config with specified name
 /// </summary>
-public class RemoveHeadlessConfigPlugin : PluginBase
+public class DeleteHeadlessConfigPlugin : PluginBase
 {
     public (bool Success, string ConfigFileName) Result { get; private set; }
 
