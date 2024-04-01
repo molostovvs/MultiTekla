@@ -3,6 +3,9 @@
 [Command("headless config create", Description = "Create config file for headless tekla plugin")]
 public class CreateHeadlessConfigCommand : CommandBase<CreateHeadlessConfigPlugin>
 {
+    [CommandParameter(0, Name = "CONFIG NAME", Description = "Config name to create")]
+    public new required string ConfigName { get; init; }
+
     [CommandOption("bin-path", 'b', Description = "Path to Tekla /bin/ directory")]
     public string? TeklaBinPath { get; init; }
 
@@ -18,6 +21,9 @@ public class CreateHeadlessConfigCommand : CommandBase<CreateHeadlessConfigPlugi
     [CommandOption("from-config", 'f', Description = "Reuse values from existing config file")]
     public string? FromConfigName { get; init; }
 
+    [CommandOption("model-name", 'm', Description = "Model name for default initialization")]
+    public new string? ModelName { get; init; }
+
     protected override ValueTask Execute(IConsole console, CreateHeadlessConfigPlugin plugin)
     {
         var config = new HeadlessConfig
@@ -32,8 +38,10 @@ public class CreateHeadlessConfigCommand : CommandBase<CreateHeadlessConfigPlugi
 
         if (FromConfigName is not null)
         {
-            var headlessConfigPluginGetter = new GetHeadlessConfigPlugin();
-            headlessConfigPluginGetter.Config = new HeadlessConfig { Name = FromConfigName, };
+            var headlessConfigPluginGetter = new GetHeadlessConfigPlugin
+            {
+                Config = new HeadlessConfig { Name = FromConfigName, }
+            };
 
             headlessConfigPluginGetter.RunPlugin();
 
@@ -53,4 +61,7 @@ public class CreateHeadlessConfigCommand : CommandBase<CreateHeadlessConfigPlugi
 
         return default;
     }
+
+    [Obsolete("This property is meaningless in this command", true)]
+    public new bool IsHeadlessMode { get; init; }
 }
