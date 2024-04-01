@@ -15,4 +15,13 @@ public class ListHeadlessConfigCommand : CommandBase<ListHeadlessConfigPlugin>
 
         return default;
     }
+
+    [Obsolete("This property is meaningless in this command", true)]
+    public new string? ConfigName { get; init; }
+
+    [Obsolete("This property is meaningless in this command", true)]
+    public new string? ModelName { get; init; }
+
+    [Obsolete("This property is meaningless in this command", true)]
+    public new bool IsHeadlessMode { get; init; }
 }
