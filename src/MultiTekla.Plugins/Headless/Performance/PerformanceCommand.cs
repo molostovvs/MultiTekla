@@ -25,4 +25,6 @@ public class PerformanceCommand : CommandBase<PerformancePlugin>
 
         return default;
     }
+
+    public new bool IsHeadlessMode { get; init; }
 }
