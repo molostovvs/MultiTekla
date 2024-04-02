@@ -27,7 +27,7 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// <c>true</c> if the command should run in headless mode; otherwise, <c>false</c>. Default is <c>false</c>.
     /// </value>
     [CommandOption("headless", 's', Description = "Run plugin with headless tekla")]
-    public bool IsHeadlessMode { get; init; } = false;
+    public bool IsHeadlessMode { get; set; } = false;
 
     /// <summary>
     /// The name of the configuration to use for a headless run.
@@ -36,7 +36,7 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// The name of the configuration. Default is <c>default</c>.
     /// </value>
     [CommandOption("config", 'c', Description = "Config to use for headless run")]
-    public string ConfigName { get; init; } = "default";
+    public string ConfigName { get; set; } = "default";
 
     /// <summary>
     /// The name of the model to be used by the command.
@@ -45,7 +45,7 @@ public abstract class CommandBase<TPlugin> : ICommand where TPlugin : PluginBase
     /// The name of the model for headless run, or <see langword="null"/> if run not in headless mode.
     /// </value>
     [CommandOption("model-name", 'm', Description = "Model name")]
-    public string? ModelName { get; init; }
+    public string? ModelName { get; set; }
 
     /// <summary>
     /// Executes the command asynchronously using the specified console for output.
