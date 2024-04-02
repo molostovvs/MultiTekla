@@ -39,7 +39,7 @@ public abstract class PluginBase
     {
         if (HeadlessTeklaPlugin is null)
             throw new ArgumentNullException(
-                $"{nameof(HeadlessTeklaPlugin)} IsHeadlessMode plugin was not initialized"
+                $"{nameof(HeadlessTeklaPlugin)} plugin was not initialized"
             );
 
         var headless = HeadlessTeklaPlugin.Value;
@@ -55,7 +55,6 @@ public abstract class PluginBase
     /// <summary>
     /// Lazily loaded instance of the `HeadlessTeklaPlugin` class, used specifically in headless mode scenarios.
     /// </summary>
-    [System.Composition.Import(AllowDefault = true)]
     [System.Composition.ImportMetadataConstraint("name", "TeklaPlugin")]
     public Lazy<PluginBase>? HeadlessTeklaPlugin { get; set; }
 }

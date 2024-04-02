@@ -35,18 +35,17 @@ public class PluginManager
 
         var cb = new ConventionBuilder();
 
-        // cb.ForType<TeklaPlugin>().Export<TeklaPlugin>().Shared();
+        cb.ForType<TeklaPlugin>()
+            .Export<PluginBase>(c => c.AddMetadata("name", t => t.Name))
+            .Shared();
 
-        cb.ForTypesDerivedFrom<PluginBase>()
-           .Export<PluginBase>()
-           .AddPartMetadata("name", t => t.Name)
-           .ImportProperties(
-                p => p.Name.Contains("Plugins") && p.DeclaringType != typeof(TeklaPlugin)
-            );
+        cb.ForTypesMatching(t => t.BaseType == typeof(PluginBase) && t != typeof(TeklaPlugin))
+            .Export<PluginBase>(c => c.AddMetadata("name", t => t.Name))
+            .ImportProperties(p => p.Name.Contains("Plugin"));
 
         cb.ForTypesDerivedFrom<ICommand>()
            .Export<ICommand>()
-           .ImportProperties(p => p?.Name.Contains("Plugins") ?? false);
+           .ImportProperties(p => p?.Name.Contains("Plugin") ?? false);
 
         var configuration = new ContainerConfiguration().WithAssemblies(assemblies, cb);
         return configuration;

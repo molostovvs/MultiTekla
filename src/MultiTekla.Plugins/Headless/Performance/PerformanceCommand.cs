@@ -20,9 +20,14 @@ public class PerformanceCommand : CommandBase<PerformancePlugin>
         sw.Stop();
 
         console.Output.WriteLine(
-            $"It took {sw.Elapsed.Seconds} seconds to open the model \"{ModelName}\" using headless tekla."
+            $"It took {sw.Elapsed.Seconds} seconds to open the model \"{plugin.Config.ModelName}\" using headless tekla."
         );
 
         return default;
     }
+
+    public PerformanceCommand()
+        => base.IsHeadlessMode = true;
+
+    public new bool IsHeadlessMode { get; init; }
 }

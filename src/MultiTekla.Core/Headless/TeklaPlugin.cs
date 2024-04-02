@@ -21,7 +21,7 @@ public class TeklaPlugin : PluginBase
         if (Config is null)
             throw new ArgumentNullException(
                 nameof(Config),
-                "You should provide config file when running tekla tekla"
+                "You should provide config file when running headless tekla"
             );
 
         if (Config.TeklaBinPath is null or "" || Config.EnvironmentIniPath is null or ""
