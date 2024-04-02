@@ -39,7 +39,7 @@ public abstract class PluginBase
     {
         if (HeadlessTeklaPlugin is null)
             throw new ArgumentNullException(
-                $"{nameof(HeadlessTeklaPlugin)} IsHeadlessMode plugin was not initialized"
+                $"{nameof(HeadlessTeklaPlugin)} plugin was not initialized"
             );
 
         var headless = HeadlessTeklaPlugin.Value;
