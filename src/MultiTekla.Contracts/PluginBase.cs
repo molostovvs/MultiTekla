@@ -55,7 +55,6 @@ public abstract class PluginBase
     /// <summary>
     /// Lazily loaded instance of the `HeadlessTeklaPlugin` class, used specifically in headless mode scenarios.
     /// </summary>
-    [System.Composition.Import(AllowDefault = true)]
     [System.Composition.ImportMetadataConstraint("name", "TeklaPlugin")]
     public Lazy<PluginBase>? HeadlessTeklaPlugin { get; set; }
 }
