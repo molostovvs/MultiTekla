@@ -1,10 +1,14 @@
 ﻿namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config delete", Description = "Delete the config file")]
-public class DeleteHeadlessConfigCommand : CommandBase<DeleteHeadlessConfigPlugin>
+public sealed class DeleteHeadlessConfigCommand : CommandBase<DeleteHeadlessConfigPlugin>
 {
     [CommandParameter(0, Name = "CONFIG NAME", Description = "Config name to delete")]
-    public new required string ConfigName { get; init; }
+    public override required string ConfigName { get; init; }
+
+    public override string? ModelName { get; init; }
+
+    public override bool IsHeadlessMode { get; init; } = false;
 
     protected override ValueTask Execute(IConsole console, DeleteHeadlessConfigPlugin plugin)
     {
@@ -18,10 +22,4 @@ public class DeleteHeadlessConfigCommand : CommandBase<DeleteHeadlessConfigPlugi
 
         return default;
     }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new string? ModelName { get; init; }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new bool IsHeadlessMode { get; init; }
 }

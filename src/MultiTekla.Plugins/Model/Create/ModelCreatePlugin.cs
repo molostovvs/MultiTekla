@@ -1,13 +1,12 @@
-using System.IO;
+﻿using System.IO;
 using Tekla.Structures.Model;
 
 namespace MultiTekla.Plugins.Model.Create;
 
 public class ModelCreatePlugin : PluginBase
 {
-    public bool MultiUser { get; set; }
     public string? Template { get; set; }
-    public string? ServerName { get; set; }
+    public string? Server { get; set; }
 
     protected override void Run()
     {
@@ -28,20 +27,22 @@ public class ModelCreatePlugin : PluginBase
                 Template ?? ""
             );
 
-            if (MultiUser && singleModelCreateSuccess)
+            if (!string.IsNullOrEmpty(Server) && singleModelCreateSuccess)
             {
-                if (ServerName is null or "")
+                if (Server is null or "")
                     throw new ArgumentException(
-                        nameof(ServerName),
-                        $"{nameof(ServerName)} is not specified"
+                        nameof(Server),
+                        $"{nameof(Server)} is not specified"
                     );
 
                 var multiuserConvertResult =
                     Tekla.Structures.ModelInternal.Operation.dotConvertAndOpenAsMultiUserModel(
                         Path.Combine(Config.ModelsPath, Config!.ModelName),
-                        ServerName
+                        Server
                     );
             }
         }
+
+        handler.Close();
     }
 }

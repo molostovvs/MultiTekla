@@ -1,10 +1,14 @@
 ﻿namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command("headless config print", Description = "Prints headless config")]
-public class PrintHeadlessConfigCommand : CommandBase<GetHeadlessConfigPlugin>
+public sealed class PrintHeadlessConfigCommand : CommandBase<GetHeadlessConfigPlugin>
 {
+    public override string? ModelName { get; init; }
+
+    public override bool IsHeadlessMode { get; init; } = false;
+
     [CommandParameter(0, Name = "CONFIG NAME", Description = "Config name to print")]
-    public new required string? ConfigName { get; init; }
+    public override required string ConfigName { get; init; }
 
     protected override ValueTask Execute(IConsole console, GetHeadlessConfigPlugin plugin)
     {
@@ -14,10 +18,4 @@ public class PrintHeadlessConfigCommand : CommandBase<GetHeadlessConfigPlugin>
 
         return default;
     }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new string? ModelName { get; init; }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new bool IsHeadlessMode { get; init; }
 }
