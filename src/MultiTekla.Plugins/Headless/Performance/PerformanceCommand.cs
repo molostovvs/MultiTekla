@@ -7,8 +7,16 @@ namespace MultiTekla.Plugins.Headless.Performance;
     Description =
         "Measure headless performance. Returns the time taken to open the model in headless mode "
 )]
-public class PerformanceCommand : CommandBase<PerformancePlugin>
+public sealed class PerformanceCommand : CommandBase<PerformancePlugin>
 {
+    [CommandParameter(0, Name = "MODEL NAME", Description = "The name of the model to open", IsRequired = false)]
+    public override string? ModelName { get; init; }
+
+    [CommandOption("config", 'c', Description = "Config to use for headless run")]
+    public override string ConfigName { get; init; } = "default";
+
+    public override bool IsHeadlessMode { get; init; } = true;
+
     protected override ValueTask Execute(IConsole console, PerformancePlugin plugin)
     {
         var sw = new Stopwatch();
@@ -25,9 +33,4 @@ public class PerformanceCommand : CommandBase<PerformancePlugin>
 
         return default;
     }
-
-    public PerformanceCommand()
-        => base.IsHeadlessMode = true;
-
-    public new bool IsHeadlessMode { get; init; }
 }

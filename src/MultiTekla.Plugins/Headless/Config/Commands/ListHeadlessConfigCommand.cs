@@ -1,11 +1,17 @@
-﻿namespace MultiTekla.Plugins.Headless.Config;
+﻿namespace MultiTekla.Plugins.Headless.Config.Commands;
 
 [Command(
     "headless config list",
     Description = "Get the list of config files for headless tekla plugin"
 )]
-public class ListHeadlessConfigCommand : CommandBase<ListHeadlessConfigPlugin>
+public sealed class ListHeadlessConfigCommand : CommandBase<ListHeadlessConfigPlugin>
 {
+    public override string ConfigName { get; init; } = null!;
+
+    public override string? ModelName { get; init; }
+
+    public override bool IsHeadlessMode { get; init; } = false;
+
     protected override ValueTask Execute(IConsole console, ListHeadlessConfigPlugin plugin)
     {
         plugin.RunPlugin();
@@ -15,13 +21,4 @@ public class ListHeadlessConfigCommand : CommandBase<ListHeadlessConfigPlugin>
 
         return default;
     }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new string? ConfigName { get; init; }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new string? ModelName { get; init; }
-
-    [Obsolete("This property is meaningless in this command", true)]
-    public new bool IsHeadlessMode { get; init; }
 }
