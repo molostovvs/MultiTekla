@@ -21,3 +21,5 @@ csharp_style_expression_bodied_indexers=true:suggestion
 csharp_style_expression_bodied_accessors=true:suggestion
 
 csharp_style_namespace_declarations=file_scoped:warning
+
+csharp_prefer_braces=when_multiline:suggestion
