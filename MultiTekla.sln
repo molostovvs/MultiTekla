@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.Plugins", "src\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTekla.ArchTests", "tests\MultiTekla.ArchTests\MultiTekla.ArchTests.csproj", "{97076EC5-531F-41E5-A010-BE744B539121}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{DC0436A3-C3B1-405C-9C86-CD96401CD518}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfcExport", "src\plugins\IfcExport\IfcExport.csproj", "{0397B72A-478F-45FC-8B10-5F5F5D05A474}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +41,12 @@ Global
 		{97076EC5-531F-41E5-A010-BE744B539121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97076EC5-531F-41E5-A010-BE744B539121}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97076EC5-531F-41E5-A010-BE744B539121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0397B72A-478F-45FC-8B10-5F5F5D05A474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0397B72A-478F-45FC-8B10-5F5F5D05A474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0397B72A-478F-45FC-8B10-5F5F5D05A474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0397B72A-478F-45FC-8B10-5F5F5D05A474}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0397B72A-478F-45FC-8B10-5F5F5D05A474} = {DC0436A3-C3B1-405C-9C86-CD96401CD518}
 	EndGlobalSection
 EndGlobal

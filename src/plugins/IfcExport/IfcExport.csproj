@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net48</TargetFrameworks>
+        <LangVersion>Latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <NoWarn>NU1701</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\MultiTekla.Contracts\MultiTekla.Contracts.csproj" />
+        <PackageReference Include="PolySharp" Version="1.14.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            </PackageReference>
+        <PackageReference Include="Tekla.Structures.Model" Version="2022.0.10715" />
+    </ItemGroup>
+
+    <Target Name="Copy plugins" AfterTargets="Build">
+        <Copy SourceFiles="$(OutputPath)/IfcExport.dll"
+              DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net48/plugins"
+              Condition="'$(TargetFramework)' == 'net48'" />
+        <Message Importance="high" Text="Copied IfcExport plugin to CLI app" Condition="'$(TargetFramework)' == 'net48'" />
+
+        <Copy SourceFiles="$(OutputPath)/IfcExport.dll"
+              DestinationFolder="$(SolutionDir)/src/MultiTekla.CLI/bin/Debug/net8.0/plugins"
+              Condition="'$(TargetFramework)' == 'net8.0'" />
+        <Message Importance="high" Text="Copied IfcExport plugin to CLI app" Condition="'$(TargetFramework)' == 'net8.0'" />
+    </Target>
+
+</Project>
