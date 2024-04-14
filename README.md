@@ -1,4 +1,4 @@
-<h1 align="center"> 🔧 Multi Tekla 🪛</h1>
+<h1 align="center"> 🔧 Multi Tekla ⚙️ </h1>
 
 MultiTekla is like a multi-tool, but for Tekla.
 It utilizes the internal API of Tekla Structures
